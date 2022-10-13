@@ -32,8 +32,7 @@ public class userController {
 
     @PostMapping("/register")
     public String submitForm(@ModelAttribute("user") User user){
-        this.userService.add(user);
-        return "loginpage";
+        return this.userService.add(user);
     }
 
     @GetMapping("/login")
@@ -44,7 +43,7 @@ public class userController {
     }
     @PostMapping("/login")
     public String loginSystem(@ModelAttribute("user") User user) {
-        return this.userService.check(user.getName(),user.getPassword());
+        return this.userService.loginCheck(user.getName(),user.getPassword());
     }
 
 

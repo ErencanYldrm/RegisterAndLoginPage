@@ -3,14 +3,9 @@ package com.example.fullstacktry.service;
 import com.example.fullstacktry.entities.User;
 import com.example.fullstacktry.repository.UserDao;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
-
-import static org.springframework.http.HttpStatus.OK;
 
 @AllArgsConstructor
 @Service
@@ -18,16 +13,29 @@ public class UserService {
 
     private UserDao userDao;
 
-    public void add(User user) {
-        this.userDao.save(user);
-    }
+    public String add(User user) {
+        Optional<User> users = this.userDao.getByNameAndEmail(user.getName(), user.getEmail());
+        Optional<User> user1 = this.userDao.getByName(user.getName());
+        Optional<User> user2 = this.userDao.getByEmail(user.getEmail());
+        if (user1.isEmpty() && user2.isEmpty()) {
+            this.userDao.save(user);
+            return "loginpage";
+        }
+        if (user1.isPresent()) {
+            return "registerinvalidusername";
+        } else {
+            return "registerinvalidemail";
+        }
 
-    public String check(String username, String password) {
+}
+
+
+
+    public String loginCheck(String username, String password) {
       Optional<User> user = this.userDao.getByNameAndPassword(username, password);
         if(user.isEmpty()){
             return "loginpageinvalid";
         }
         return "homepage";
-
     }
 }
