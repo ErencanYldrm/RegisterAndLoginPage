@@ -35,16 +35,17 @@ public class userController {
         return this.userService.add(user);
     }
 
-    @GetMapping("/login")
+    @GetMapping("/loginpage")
     public String login(Model model){
         User user = new User();
         model.addAttribute("user",user);
         return "loginpage";
     }
-    @PostMapping("/login")
+    @PostMapping("/homepage")
     public String loginSystem(@ModelAttribute("user") User user) {
         return this.userService.loginCheck(user.getName(),user.getPassword());
     }
+
 
 
 
